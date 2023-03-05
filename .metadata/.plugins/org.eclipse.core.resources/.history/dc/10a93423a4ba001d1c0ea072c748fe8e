@@ -1,0 +1,30 @@
+package com.example.book.web;
+
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+// 단위 테스트 -> 컨트롤러만 테스트 -> Controller 관련 로직만 IoC 띄움 
+// Filter, ControllerAdvice -> 익셉션 처리할 때 섰음
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@WebMvcTest // 컨트롤러를 위한 객체들이 메모리에 뜸 -> 전체가 뜨지않아 가벼움
+//@ExtendWith(SpringExtension.class) -> Jnuit5 테스트지만 위 어노테이션에 들어가있음
+//@RunWith(SpringRunner.class) // 필수 -> Junit4 테스트를 할때 스프링 환경에서 하고 싶다면
+public class BookControllerUnitTest {
+
+	@Autowired //@WebMvcTest안에 @AutoConfigureMockMvc 있어서 DI 가능
+	private MockMvc mvc;
+	
+	@Test
+	public void save_테스트() {
+		log.info("save_테스트 시작");
+	}
+	
+}

@@ -1,0 +1,19 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true # 들어오는 모든 데이터를 utf-8로 변경하겠다
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+    
+  jpa:
+    hibernate:
+      ddl-auto: create # create, update, none -> 실행 후 update로 변경해야함
+      naming: # 네이밍 전략은 반드시 명시
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # 내가 적은 컬럼 그대로 만든다는 것
+    show-sql: true
