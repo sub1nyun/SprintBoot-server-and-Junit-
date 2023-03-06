@@ -2,6 +2,10 @@ package com.example.book.web;
 
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.book.domain.Book;
+import com.example.book.domain.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +44,9 @@ public class BookControllerIntegreTest {
 
 	@Autowired 
 	private MockMvc mockMvc;
+	
+	@Autowired
+	private BookRepository bookRepository;
 	
 	//BDDMockito 패턴 given, when, then
 	@Test
@@ -66,6 +74,34 @@ public class BookControllerIntegreTest {
 		// $ 전체 결과 .변수가 value("~") 가 맞는지 검증
 		.andDo(MockMvcResultHandlers.print()); // 콘솔에 결과를 보여줌
 	}
+	
+	@Test
+	public void find_All_테스트() throws Exception {
+		// given 
+		// 현재는 미리 필요한 데이터가 없지만 롤백됐으니 생성해줌
+		List<Book> books = new ArrayList<>();
+		books.add(new Book(1L, "스프링부트 따라하기", "코스"));
+		books.add(new Book(2L, "리엑트 따라하기", "코스"));
+		
+		
+		
+		//when 
+		//MockMvcRequestBuilders import 절에 static 으로 선언하면 줄여서 사용이 가능함
+		//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/book")
+				.accept(MediaType.APPLICATION_JSON));
+		
+		//then 을 안 적으면 테스트 100% 보장하기 어려움
+		// isOk() 리턴 값 -> ResultMatcher
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.[0].title").value("스프링부트 따라하기"))
+			.andDo(MockMvcResultHandlers.print());
+			
+			
+	}
+	
 	
 	
 	
