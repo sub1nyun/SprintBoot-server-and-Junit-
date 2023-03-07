@@ -41,7 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 @AutoConfigureMockMvc 
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class BookControllerIntegreTest {
-
+	//Integration -> 통합테스트
+	//나머지 사항 복습하기
+	
 	@Autowired 
 	private MockMvc mockMvc;
 	
