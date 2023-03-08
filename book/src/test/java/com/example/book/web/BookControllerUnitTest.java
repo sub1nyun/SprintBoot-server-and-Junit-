@@ -53,12 +53,16 @@ public class BookControllerUnitTest {
 	@Test
 	public void save_테스트() throws Exception {
 		// given 테스트를 하기 위한 준비
-		// object를 json으로 바꾸는 함수 -> 저장하기() json 타입 데이터가 필요해서
+		// new ObjectMapper().writeValueAsString object를 json으로 바꾸는 함수 
+		//-> 저장하기() json 타입 데이터가 필요해서
 		Book book = new Book(null, "스프링 따라하기", "코스");
 		String content = new ObjectMapper().writeValueAsString(book);
 		// {"id":null,"title":"스프링 따라하기","author":"코스"}
+		//bookService가 가짜기 때문에 결과가 null임 -> stub만들기(가정법) 행동 지정
 		// 가정법 -> 미리 행동을 지정하는 것 -> 리턴 결과 값 지정해두기      ▼
 		when(bookService.저장하기(book)).thenReturn(new Book(1L, "스프링 따라하기", "코스"));
+		// thenReturn -> 일부 기능이 준비 x -> 미리 리턴 값을 선언 하여 사용
+		// 메소드를 호출은 하지만 리턴 값 지정 -> 실제 호출하기에 문제점 발견 가능
 		
 		// when -> 테스트 실행
 		// perform 리턴 타입 -> ResultActions
@@ -67,9 +71,12 @@ public class BookControllerUnitTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				// 실제로 던질 데이터
 				.content(content)
+				// 응답
 				.accept(MediaType.APPLICATION_JSON));
+				//응답 확인
+				//.andExpect(null);
 		
-		// then (검증)
+		// then (검증) 위에서 나온 결과 확인하기 isCreated() -> 201
 		resultActions.andExpect(MockMvcResultMatchers.status().isCreated())
 		.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("스프링 따라하기"))
 		// $ 전체 결과 .변수가 value("~") 가 맞는지 검증
