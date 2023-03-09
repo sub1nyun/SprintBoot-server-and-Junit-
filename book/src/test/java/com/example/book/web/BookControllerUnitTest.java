@@ -1,6 +1,7 @@
 package com.example.book.web;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -112,7 +114,7 @@ public class BookControllerUnitTest {
 	@Test
 	public void findById_테스트() throws Exception {
 		//given 
-		Long id = 1L;
+		Long id = 1L; // 조회할 아이디
 		//db에 값이 없음, 서비스 가짜 객체 -> stub 필요
 		when(bookService.한건가져오기(id)).thenReturn(new Book(1L, "자바 공부하기", "쌀"));
 		
@@ -127,6 +129,52 @@ public class BookControllerUnitTest {
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("자바 공부하기"))
 			.andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void update_테스트() throws Exception {
+		//given 
+		Long id = 1L; // update할 아이디
+		Book book = new Book(null, "C++ 따라하기", "코스");
+		String content = new ObjectMapper().writeValueAsString(book);
+		
+		when(bookService.수정하기(id, book)).thenReturn(new Book(1L, "C++ 따라하기", "코스"));
+		
+		//when
+		ResultActions resultActions =  mockMvc.perform(MockMvcRequestBuilders.put("/book/{id}", id) 
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(content)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("C++ 따라하기"))
+			.andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void delete_테스트() throws Exception {
+		//given 
+		Long id = 1L; 
+		// delete가 호출 되기때문에 stub만 지정해두면 됨 -> 리턴 값 String임
+		// deleteById -> void
+		when(bookService.삭제하기(id)).thenReturn("ok");
+		
+		//when
+		ResultActions resultActions =  mockMvc.perform(MockMvcRequestBuilders.delete("/book/{id}", id) 
+				.accept(MediaType.TEXT_PLAIN)); // body 값
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andDo(MockMvcResultHandlers.print());
+		
+		// 문자를 응답하면 사용
+		MvcResult requestResult = resultActions.andReturn();
+		String result = requestResult.getResponse().getContentAsString();
+		// ok가 맞는지 검증
+		assertEquals("ok", result);
 	}
 
 

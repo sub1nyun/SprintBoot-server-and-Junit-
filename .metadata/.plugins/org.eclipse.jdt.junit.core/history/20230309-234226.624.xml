@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BookRepositoryUnitTest.save_테스트" project="book" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="com.example.book.domain.BookRepositoryUnitTest" time="0.183" displayname="BookRepositoryUnitTest" uniqueid="[engine:junit-jupiter]/[class:com.example.book.domain.BookRepositoryUnitTest]">
+    <testcase name="save_테스트" classname="com.example.book.domain.BookRepositoryUnitTest" time="0.183" displayname="save_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.domain.BookRepositoryUnitTest]/[method:save_테스트()]"/>
+  </testsuite>
+</testrun>

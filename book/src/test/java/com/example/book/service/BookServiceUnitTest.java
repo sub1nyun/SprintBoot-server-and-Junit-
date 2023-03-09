@@ -1,10 +1,13 @@
 package com.example.book.service;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.example.book.domain.Book;
 import com.example.book.domain.BookRepository;
 
 import jakarta.inject.Inject;
@@ -26,5 +29,14 @@ public class BookServiceUnitTest {
 	private BookService bookService;
 	@Mock // mock 환경에 뜨는것 -> IoC x
 	private BookRepository bookRepository;
+	
+	
+	// 모두 가짜 객체기 때문에 로직만 테스트하면 됨
+	@Test
+	public void 저장하기_테스트() {
+		// 스프링 환경이 필요 없음
+
+	}
+	
 
 }

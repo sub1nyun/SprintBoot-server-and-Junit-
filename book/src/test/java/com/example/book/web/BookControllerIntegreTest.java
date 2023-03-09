@@ -1,8 +1,10 @@
 package com.example.book.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.Matchers;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -109,6 +112,82 @@ public class BookControllerIntegreTest {
 			.andDo(MockMvcResultHandlers.print());
 	}
 	
+	@Test
+	public void findById_테스트() throws Exception {
+		//given 
+		Long id = 2L;
+		
+		// 데이터가 들어가 있어야 조회가 가능함
+		List<Book> books = new ArrayList<>();
+		books.add(new Book(null, "스프링부트 따라하기", "코스"));
+		books.add(new Book(null, "리엑트 따라하기", "코스"));
+		books.add(new Book(null, "JUnit 따라하기", "코스"));
+		bookRepository.saveAll(books);
+		
+		//when																																					▼id 넣어줌
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/book/{id}", id)
+				//find -> 줘야할 타입 없음, 던져줄 데이터도 없음
+				// 기대하기만 
+				.accept(MediaType.APPLICATION_JSON));
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("리엑트 따라하기"))
+			.andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void update_테스트() throws Exception {
+		//given 
+		Long id = 3L; // update할 아이디
+		// update 하기 위한 기본 데이터 세팅
+		// @AfterEach 에서 bookRepository.deleteAll(); 
+		List<Book> books = new ArrayList<>();
+		books.add(new Book(null, "스프링부트 따라하기", "코스"));
+		books.add(new Book(null, "리엑트 따라하기", "코스"));
+		books.add(new Book(null, "JUnit 따라하기", "코스"));
+		bookRepository.saveAll(books);
+		
+		// 리턴 될 데이터
+		Book book = new Book(null, "C++ 따라하기", "코스");
+		String content = new ObjectMapper().writeValueAsString(book);
+		
+
+		//when
+		ResultActions resultActions =  mockMvc.perform(MockMvcRequestBuilders.put("/book/{id}", id) 
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(content)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(3L))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("C++ 따라하기"))
+			.andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void delete_테스트() throws Exception {
+		//given 
+		Long id = 1L; 
+		bookRepository.saveAll(Arrays.asList(new Book(null, "스프링부트 따라하기", "코스"), new Book(null, "리엑트 따라하기", "코스")));
+
+		//when
+		ResultActions resultActions =  mockMvc.perform(MockMvcRequestBuilders.delete("/book/{id}", id));
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andDo(MockMvcResultHandlers.print());
+		
+		// 문자를 응답하면 사용
+		MvcResult requestResult = resultActions.andReturn();
+		String result = requestResult.getResponse().getContentAsString();
+		// ok가 맞는지 검증
+		assertEquals("ok", result);
+	}
 	
 	
 	
