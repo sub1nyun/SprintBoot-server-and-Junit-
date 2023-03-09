@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BookControllerIntegreTest" project="book" tests="2" started="2" failures="0" errors="0" ignored="0">
+  <testsuite name="com.example.book.web.BookControllerIntegreTest" time="0.42" displayname="BookControllerIntegreTest" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerIntegreTest]">
+    <testcase name="save_테스트" classname="com.example.book.web.BookControllerIntegreTest" time="0.316" displayname="save_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerIntegreTest]/[method:save_테스트()]"/>
+    <testcase name="find_All_테스트" classname="com.example.book.web.BookControllerIntegreTest" time="0.103" displayname="find_All_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerIntegreTest]/[method:find_All_테스트()]"/>
+  </testsuite>
+</testrun>

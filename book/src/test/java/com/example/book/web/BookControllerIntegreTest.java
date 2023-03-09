@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +24,7 @@ import com.example.book.domain.Book;
 import com.example.book.domain.BookRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -47,8 +49,17 @@ public class BookControllerIntegreTest {
 	@Autowired 
 	private MockMvc mockMvc;
 	
-	@Autowired
+	@Autowired // 실환경이라 DI 가능
 	private BookRepository bookRepository;
+	
+	@Autowired //JPA가 구현체임
+	private EntityManager entityManager;
+	
+	@BeforeEach // 모든 테스트메서드가 실행 되기직전에 각각 실행 됨
+	public void init() { //                                       ▼ h2 쿼리문
+		entityManager.createNativeQuery("ALTER TABLE book ALTER COLUMN id RESTART WITH 1").executeUpdate();
+	}
+	
 	
 	//BDDMockito 패턴 given, when, then
 	@Test
@@ -80,28 +91,22 @@ public class BookControllerIntegreTest {
 	@Test
 	public void find_All_테스트() throws Exception {
 		// given 
-		// 현재는 미리 필요한 데이터가 없지만 롤백됐으니 생성해줌
 		List<Book> books = new ArrayList<>();
 		books.add(new Book(1L, "스프링부트 따라하기", "코스"));
 		books.add(new Book(2L, "리엑트 따라하기", "코스"));
-		
-		
-		
+		books.add(new Book(3L, "JUnit 따라하기", "코스"));
+		bookRepository.saveAll(books); // 실제 db에 데이터 추가
+
 		//when 
-		//MockMvcRequestBuilders import 절에 static 으로 선언하면 줄여서 사용이 가능함
-		//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/book")
 				.accept(MediaType.APPLICATION_JSON));
 		
-		//then 을 안 적으면 테스트 100% 보장하기 어려움
-		// isOk() 리턴 값 -> ResultMatcher
+		//then
 		resultActions
 			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
-			.andExpect(MockMvcResultMatchers.jsonPath("$.[0].title").value("스프링부트 따라하기"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(3)))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.[2].title").value("JUnit 따라하기"))
 			.andDo(MockMvcResultHandlers.print());
-			
-			
 	}
 	
 	

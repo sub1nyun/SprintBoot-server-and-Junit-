@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 //컨트롤러를 위한 객체들이 메모리에 뜸 -> 전체가 뜨지않아 가벼움
 
 @Slf4j // log
-@WebMvcTest // 실제 Controller, Filter, advice를 IoC에 띄우는 기능
+@WebMvcTest // 실제(스프링 IoC) Controller, Filter, advice를 IoC에 띄우는 기능
 //@ExtendWith(SpringExtension.class) -> Jnuit5 테스트지만 위 어노테이션에 들어가있음
 //@RunWith(SpringRunner.class) // 필수 -> Junit4 테스트를 할때 스프링 환경에서 하고 싶다면
 public class BookControllerUnitTest {
@@ -46,7 +46,9 @@ public class BookControllerUnitTest {
 	@Autowired //@WebMvcTest안에 @AutoConfigureMockMvc 있어서 DI 가능
 	private MockMvc mockMvc;
 	
-	@MockBean //(가짜) // IoC 환경에 bean 등록됨
+	// 현재 테스트 환경에서는 서비스가 IoC 되어있지 않음
+	// 실제 환경이기(IoC)에서 찾기때문에 @Mock x 
+	@MockBean //(가짜) IoC 등록
 	private BookService bookService;
 	
 	//BDDMockito 패턴 given, when, then
@@ -101,12 +103,30 @@ public class BookControllerUnitTest {
 		//then 을 안 적으면 테스트 100% 보장하기 어려움
 		// isOk() 리턴 값 -> ResultMatcher
 		resultActions
-			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.status().isOk()) //2개를 기대함 
 			.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
 			.andExpect(MockMvcResultMatchers.jsonPath("$.[0].title").value("스프링부트 따라하기"))
 			.andDo(MockMvcResultHandlers.print());
-			
-			
+	}
+	
+	@Test
+	public void findById_테스트() throws Exception {
+		//given 
+		Long id = 1L;
+		//db에 값이 없음, 서비스 가짜 객체 -> stub 필요
+		when(bookService.한건가져오기(id)).thenReturn(new Book(1L, "자바 공부하기", "쌀"));
+		
+		//when																																					▼id 넣어줌
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/book/{id}", id)
+				//find -> 줘야할 타입 없음, 던져줄 데이터도 없음
+				// 기대하기만 
+				.accept(MediaType.APPLICATION_JSON));
+		
+		//then 검증
+		resultActions
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.title").value("자바 공부하기"))
+			.andDo(MockMvcResultHandlers.print());
 	}
 
 
