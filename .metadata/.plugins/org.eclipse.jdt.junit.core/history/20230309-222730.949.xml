@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="BookControllerUnitTest" project="book" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="com.example.book.web.BookControllerUnitTest" time="0.117" displayname="BookControllerUnitTest" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerUnitTest]">
-    <testcase name="save_테스트" classname="com.example.book.web.BookControllerUnitTest" time="0.1" displayname="save_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerUnitTest]/[method:save_테스트()]"/>
-    <testcase name="find_All_테스트" classname="com.example.book.web.BookControllerUnitTest" time="0.016" displayname="find_All_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerUnitTest]/[method:find_All_테스트()]"/>
-  </testsuite>
-</testrun>

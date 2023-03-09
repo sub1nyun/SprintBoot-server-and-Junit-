@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="BookControllerIntegreTest.delete_테스트" project="book" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testsuite name="com.example.book.web.BookControllerIntegreTest" time="0.272" displayname="BookControllerIntegreTest" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerIntegreTest]">
-    <testcase name="delete_테스트" classname="com.example.book.web.BookControllerIntegreTest" time="0.272" displayname="delete_테스트()" uniqueid="[engine:junit-jupiter]/[class:com.example.book.web.BookControllerIntegreTest]/[method:delete_테스트()]"/>
-  </testsuite>
-</testrun>

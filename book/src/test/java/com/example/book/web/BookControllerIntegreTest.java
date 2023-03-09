@@ -41,10 +41,18 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 
+/**
+ * 통합 테스트 하는 법 단점 : 모든 빈이 다 로드되기 때문에 통합 테스트가 가능하지만 느림!! 장점 : 실제 서비스와 가장 유사하게 테스트
+ * 가능. 팁 : SpringBootTest(class= {BookController.class, BookService.class,
+ * BookRepository.class}) 이렇게 필요한 빈만 올릴 수 도 있음.
+ */
+
+
+
 @Slf4j
-@Transactional
-@AutoConfigureMockMvc 
-@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
+@Transactional // 모든 트랜잭션 작업이 각각의 테스트 종료후 rollback 된다.
+@AutoConfigureMockMvc  // MockMvc를 빈으로 등록해준다.
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)  // 서블릿을 mocking 한것이 동작한다. (내장 톰켓 사용 안함)
 public class BookControllerIntegreTest {
 	//Integration -> 통합테스트
 	//나머지 사항 복습하기

@@ -39,6 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 //Filter, ControllerAdvice -> 익셉션 처리할 때 섰음
 //컨트롤러를 위한 객체들이 메모리에 뜸 -> 전체가 뜨지않아 가벼움
 
+/**
+ * MockMvc 설명
+ * perform() 수행
+ * andDo() 이후 할 행동
+ * andExpect() 기대값
+ * 기대값에 content() 사용
+ */
+
 @Slf4j // log
 @WebMvcTest // 실제(스프링 IoC) Controller, Filter, advice를 IoC에 띄우는 기능
 //@ExtendWith(SpringExtension.class) -> Jnuit5 테스트지만 위 어노테이션에 들어가있음
