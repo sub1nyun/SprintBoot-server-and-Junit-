@@ -64,4 +64,12 @@
 		<item value="org.springframework.ide.eclipse.webflow.feature:3.9.21.202202040945-RELEASE"/>
 		<item value="org.springframework.ide.eclipse.xml.namespaces.feature:4.13.1.202201311654"/>
 	</list>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="221"/>
+		<item key="DIALOG_Y_ORIGIN" value="459"/>
+	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
 </section>
