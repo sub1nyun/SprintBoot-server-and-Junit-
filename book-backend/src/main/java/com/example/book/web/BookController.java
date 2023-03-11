@@ -2,6 +2,7 @@ package com.example.book.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class BookController {
 		return new ResponseEntity<>(bookService.저장하기(book), HttpStatus.CREATED);
 	}
 	
+	@CrossOrigin //외부에서 날아오는 js 요청을 허용해줌
 	@GetMapping("/book")
 	//? 인 이유는 현재 리턴할 것이 뭔지 모르기도하고 관리하기가 편함
 	//ResponseEntity -> 리턴 할때 http 상태코드를 같이 전송이 가능
