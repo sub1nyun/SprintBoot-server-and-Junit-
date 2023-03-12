@@ -22,6 +22,7 @@ public class BookController {
 	
 	private final BookService bookService;
 	
+	@CrossOrigin
 	@PostMapping("/book")
 	public ResponseEntity<?> save(@RequestBody Book book) {
 		// 리턴시 알아서 타입에 맞게 리턴 됨
