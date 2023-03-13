@@ -38,13 +38,13 @@ const SaveForm = (props) => {
             }else {
                 return null;
             }}))
-        .then((res=>{
+        .then((res=>{ // Catch 오류 부분
             if(res !== null) {
                 handleGoHome();
             }else {
                 alert("등록 실패했음");
             }
-        }
+        }// then 에서 실패시 작동 
         )).catch((error) => {
             console.log(error)
         });

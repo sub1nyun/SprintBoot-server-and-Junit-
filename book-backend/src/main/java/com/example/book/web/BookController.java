@@ -22,7 +22,8 @@ public class BookController {
 	
 	private final BookService bookService;
 	
-	@CrossOrigin
+	// security (라이브러리) - CORS 정책을 갖고 있음 (시큐리티가 CORS를 해제)
+	@CrossOrigin // Controller 진입 직전에 -> 임시방편임
 	@PostMapping("/book")
 	public ResponseEntity<?> save(@RequestBody Book book) {
 		// 리턴시 알아서 타입에 맞게 리턴 됨
@@ -38,17 +39,18 @@ public class BookController {
 		// ok -> 200
 	}
 	
+	@CrossOrigin
 	@GetMapping("/book/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 		return new ResponseEntity<>(bookService.한건가져오기(id), HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PutMapping("/book/{id}")
 	// update 시에는 -> 데이터를 두 건 받아야 가능함
 	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Book book) {
 		return new ResponseEntity<>(bookService.수정하기(id, book), HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@DeleteMapping("/book/{id}")
 	// update 시에는 -> 데이터를 두 건 받아야 가능함
 	public ResponseEntity<?> deleteById(@PathVariable Long id) {
